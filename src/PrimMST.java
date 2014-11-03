@@ -28,8 +28,17 @@ public class PrimMST {
 	private void getMST() {
 		
 		for(int i=0; i < g.getN(); i++ ) {
-			primNode(i);
+			if( !visited[i] ) {
+				//System.out.println(i);
+				primNode(i);
+			}
 		}
+		double totalWeight = 0;
+		for( int i = 0 ; i < g.getN(); i++ )
+			totalWeight += dists[i];
+		
+		System.out.println(totalWeight);
+		
 	}
 	
 	/*
@@ -37,6 +46,8 @@ public class PrimMST {
 	 * @param i The vertex
 	 */
 	private void primNode(int i) {
+		if( visited[i] ) 
+			return;
 		dists[i] = 0.0;
 		vheap.insert(i, dists[i]);
 		while(!vheap.isEmpty()) {
@@ -67,6 +78,7 @@ public class PrimMST {
 				g.addEdge(new Edge(i,j,20-i-j*1.0));
 			
 		}
+		g.addEdge(new Edge(8,9,10));
 		PrimMST mst = new PrimMST(g);
 		Edge[] edges = mst.getEdges();
 		for(Edge e: edges) {
