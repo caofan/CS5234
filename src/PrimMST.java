@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 
 /*
  * An implementation of the Prim's algorithm for finding the Minimal spanning tree of a connected graph.
@@ -8,9 +11,11 @@ public class PrimMST {
 	private boolean[] visited; //Keep track of nodes of whether they are visited
 	private Graph g;
 	private BinaryHeap<Double> vheap; //Heap to store the distance to nodes.
+	private double totalWeight;
 	
 	public PrimMST( Graph g ) {
 		this.g = g;
+		this.totalWeight = -1;
 		edges = new Edge[g.getN()];
 		dists = new double[g.getN()];
 		visited = new boolean[g.getN()];
@@ -18,7 +23,7 @@ public class PrimMST {
 			visited[i] = false;
 			dists[i] = Double.POSITIVE_INFINITY;
 		}
-		vheap = new BinaryHeap<Double>();
+		vheap = new BinaryHeap<Double>(g.getN());
 		getMST();
 	}
 	
@@ -33,12 +38,22 @@ public class PrimMST {
 				primNode(i);
 			}
 		}
-		double totalWeight = 0;
-		for( int i = 0 ; i < g.getN(); i++ )
-			totalWeight += dists[i];
-		
+		getWeight();
 		System.out.println(totalWeight);
 		
+	}
+	
+	/*
+	 * Get the total weight of the minimal spannint tree/forest.
+	 * @return the total weight in a double type.
+	 */
+	public double getWeight() {
+		if( this.totalWeight < 0)
+		{
+			for( int i = 0 ; i < dists.length; i++ )
+				totalWeight += dists[i];
+		}
+		return this.totalWeight;
 	}
 	
 	/*
@@ -67,24 +82,41 @@ public class PrimMST {
 		}
 	}
 	
-	public Edge[] getEdges() {
-		return edges;
+	public ArrayList<Edge> getEdges() {
+		ArrayList<Edge> nonNullEdges = new ArrayList<Edge>(edges.length);
+		for(int i = 0; i < edges.length; i++) {
+			Edge e = edges[i];
+			if(e!=null)
+				nonNullEdges.add(e);
+		}
+		return nonNullEdges;
 	}
 	
+	
 	public static void main(String[] args) {
+		Random random = new Random();
 		AdjacencyListGraph g = new AdjacencyListGraph(10);
 		for( int i = 0; i < 8; i ++ ) {
 			for( int j = i+1; j < 8; j++ )
-				g.addEdge(new Edge(i,j,20-i-j*1.0));
+				g.addEdge(new Edge(i,j,random.nextDouble()*10));
 			
 		}
-		g.addEdge(new Edge(8,9,10));
+		g.addEdge(new Edge(8,9,random.nextDouble()*10));
+		ArrayList<ArrayList<Integer>> dfs = g.dfs();
+		for(ArrayList<Integer> subOrder: dfs ) {
+			for(Integer i: subOrder) {
+				System.out.print(i + " ");
+			}
+			System.out.println();
+		}
 		PrimMST mst = new PrimMST(g);
-		Edge[] edges = mst.getEdges();
+		ArrayList<Edge> edges = mst.getEdges();
 		for(Edge e: edges) {
 			if(e != null)
 				System.out.println(e);
 		}
 	}
+	
+	
 	
 }

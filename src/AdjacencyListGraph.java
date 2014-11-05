@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 
 
 /*
@@ -51,6 +53,56 @@ public class AdjacencyListGraph implements Graph{
 	
 	public int getNumberEdgesOn(int v) {
 		return adj[v].size();
+	}
+	
+	/*
+	 * Depth-first traversal of the graph.
+	 * Will report all components.
+	 */
+	public ArrayList<ArrayList<Integer>> dfs() {
+		ArrayList<ArrayList<Integer>> order = new ArrayList<ArrayList<Integer>>();
+		boolean[] traveled = new boolean[this.N];
+		for(int i = 0; i < traveled.length; i++ ) {
+			traveled[i] = false;
+		}
+		for(int i = 0; i < traveled.length; i++) {
+			ArrayList<Integer> currOrder = new ArrayList<Integer>(this.N);
+			if(!traveled[i]) {
+				dfsNode( i, traveled, currOrder );
+				order.add(currOrder);
+			}
+			
+		};
+		return order;
+	}
+	
+	public void dfsNode( int i, boolean[] traveled, ArrayList<Integer> currOrder ) {
+		
+		Stack<Integer> stack = new Stack<Integer>();
+		int[] parent = new int[traveled.length];
+		for(int j =0; j< parent.length; j++ )
+			parent[j] = -1;
+		stack.push(i);
+		while( !stack.isEmpty()) {
+			int curr = stack.pop();
+			currOrder.add( curr );
+			
+			if(!traveled[curr]) {
+				if(parent[curr] != -1 ) 
+					stack.push( parent[curr] );
+				traveled[curr] = true;
+				for(Edge e: adj(curr)) {
+					int other = e.other(curr);
+					if( other != parent[curr] ) 
+						stack.push( other );		
+					if( !traveled[other] ) {
+						parent[other] = curr;
+					}
+				}
+				
+			}
+
+		}
 	}
 	
 	

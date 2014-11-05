@@ -30,4 +30,8 @@ public interface Graph {
 	 */
 	public void addEdge( Edge e);
 	
+	/*
+	 * Test if the graph contains an edge.
+	 */
+	
 }

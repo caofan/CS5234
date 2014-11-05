@@ -3,7 +3,7 @@ import java.util.PriorityQueue;
 import java.util.HashMap;
 import java.util.Random;
 public class BinaryHeap<T extends Comparable<T>> {
-	private int maxSize;
+	private final int maxSize;
 	private T[] data;
 	private int[] heap;
 	private int[] index; //The array such that index[i] is the location of item of index i in heap.
@@ -49,7 +49,7 @@ public class BinaryHeap<T extends Comparable<T>> {
 	
 	private void checkI( int i ) {
 		if( i < 0 || i >= maxSize ) {
-			System.err.println("Index not valid.");
+			System.err.println(i + " " + maxSize + " Index not valid.");
 			System.exit(1);
 		}
 			
