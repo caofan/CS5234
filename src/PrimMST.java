@@ -31,15 +31,17 @@ public class PrimMST {
 	 * To run the Prim's algorithm and populate edges[], dists[].
 	 */
 	private void getMST() {
-		
+		int count = 0;
 		for(int i=0; i < g.getN(); i++ ) {
 			if( !visited[i] ) {
+				count ++;
 				//System.out.println(i);
 				primNode(i);
 			}
 		}
+		
 		getWeight();
-		System.out.println(totalWeight);
+		System.out.println(count + " MST weight: " + totalWeight);
 		
 	}
 	
@@ -50,8 +52,10 @@ public class PrimMST {
 	public double getWeight() {
 		if( this.totalWeight < 0)
 		{
-			for( int i = 0 ; i < dists.length; i++ )
+			totalWeight = 0;
+			for( int i = 0 ; i < dists.length; i++ ) {
 				totalWeight += dists[i];
+			}
 		}
 		return this.totalWeight;
 	}
@@ -65,11 +69,15 @@ public class PrimMST {
 			return;
 		dists[i] = 0.0;
 		vheap.insert(i, dists[i]);
+		int count = 0;
 		while(!vheap.isEmpty()) {
 			int curr = vheap.pop();
 			visited[curr] = true;
+			count ++;
 			for( Edge e: g.adj(curr)) {
+				//System.out.println("Has edge");
 				int other = e.other(curr);
+				//System.out.println(e.weight());
 				if( ! visited[other] && e.weight() < dists[other] ) {
 					if( vheap.contains(other))
 						vheap.decreaseKey(other, e.weight());
@@ -80,6 +88,7 @@ public class PrimMST {
 				}
 			}
 		}
+		//System.out.println("current visited: " + count);
 	}
 	
 	public ArrayList<Edge> getEdges() {

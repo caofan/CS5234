@@ -1,4 +1,4 @@
 
-public class Node {
-
+public interface Node {
+	double distanceTo(Node other);
 }

@@ -7,40 +7,47 @@ public class Main {
 		Random random = new Random();
 		PriorityQueue<Integer>  pq = new PriorityQueue();
 		FibonacciHeap<Integer> h = new FibonacciHeap();
-		BinaryHeap<Integer> bh = new BinaryHeap(10000000);
+		BinaryHeap<Integer> bh;
 		int[] v1 =   {1,1,1,2,2,2,3,3,3};
 		int[] v2 =   {2,3,4,4,3,1,4,5,6};
 		int[] w = {5,4,3,2,1,4,5,6,7};
-		int iters = 10000000;
+		int iters = 100000;
+		int rounds = 10;
+		int rounds2 = 20;
 		long time1 = System.currentTimeMillis();
-		for(int i = 0; i< iters; i++ ){
-			//Edge newEdge = new Edge(i,i,i/2);
-			h.enqueue(random.nextInt(1000));
-		}
-		for(int i = 0; i<iters; i++){
-			//System.out.println("Number of nodes: " + h.getNumNodes());
-			//System.out.println("RootList");
-			//h.printRoot();
-			//System.out.println("++++ENDRootList");
-			h.deleteMin();
-			//System.out.print(h.deleteMin().getKey() + " ");
-			//System.out.println(min.getKey().toString());
-			
+		for(int j = 0; j < rounds; j++ ) {
+			for(int i = 0; i< iters/rounds; i++ ){
+				//Edge newEdge = new Edge(i,i,i/2);
+				h.enqueue(random.nextInt(1000));
+			}
+			for(int i = 0; i<iters/rounds2; i++){
+				//System.out.println("Number of nodes: " + h.getNumNodes());
+				//System.out.println("RootList");
+				//h.printRoot();
+				//System.out.println("++++ENDRootList");
+				h.deleteMin();
+				//System.out.print(h.deleteMin().getKey() + " ");
+				//System.out.println(min.getKey().toString());
+				
+			}
 		}
 		//System.out.println();
 		long time2 = System.currentTimeMillis();
-		
-		for(int i = 0; i < iters; i ++ )
-			pq.add(random.nextInt(1000));
-		for(int i = 0; i < iters; i ++ )
-			pq.remove();
+		for(int j = 0; j < rounds; j++ ) {
+			for(int i = 0; i < iters/rounds; i ++ )
+				pq.add(random.nextInt(1000));
+			for(int i = 0; i < iters/rounds2; i ++ )
+				pq.remove();
+		}
 		long time3 = System.currentTimeMillis();
 		
-		
-		for(int i = 0; i < iters; i ++ )
+		bh = new BinaryHeap(iters);
+		for(int j = 0; j<rounds; j++) {
+		for(int i = 0; i < iters/rounds; i ++ )
 			bh.insert(i,random.nextInt(1000));
-		for(int i = 0; i < iters; i ++ )
+		for(int i = 0; i < iters/rounds2; i ++ )
 			bh.pop();
+		}
 			//System.out.print(bh.dequeue() + " ");
 		//System.out.println();
 		long time4 = System.currentTimeMillis();
